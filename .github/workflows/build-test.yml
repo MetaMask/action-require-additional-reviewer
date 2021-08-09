@@ -1,4 +1,4 @@
-name: Build, Lint, and Test
+name: Test Deps and Lint
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
 
 jobs:
   build-lint-test:
-    name: Build, Lint, and Test
+    name: Test Deps and Lint
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -31,15 +31,14 @@ jobs:
           key: yarn-cache-${{ runner.os }}-${{ steps.yarn-version.outputs.YARN_VERSION }}-${{ hashFiles('yarn.lock') }}
       - run: yarn --frozen-lockfile
       - run: yarn allow-scripts
-      - run: yarn build
       - run: yarn lint
-      - run: yarn test
       - name: Validate RC changelog
         if: ${{ startsWith(github.head_ref, 'release/') }}
         run: yarn auto-changelog validate --rc
       - name: Validate changelog
         if: ${{ !startsWith(github.head_ref, 'release/') }}
         run: yarn auto-changelog validate
+
   all-jobs-pass:
     name: All jobs pass
     runs-on: ubuntu-20.04

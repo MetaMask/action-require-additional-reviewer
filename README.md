@@ -1,22 +1,23 @@
-# MetaMask Module Template
+# MetaMask/action-require-additional-reviewer
 
-This TypeScript module is maintained in the style of the MetaMask team.
+## Description
 
-## Installation
+This action can be used to create workflows that require additional reviewers for programmatically created pull requests.
+It is designed to be used with [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr).
 
-`yarn add @metamask/this-module`
-
-or
-
-`npm install @metamask/this-module`
+`action-create-release-pr` is manually triggered by a GitHub user, but the resulting PR is authored by the GitHub Actions bot. This means that the human release author can merge their own release without third-party review. By modifying the `action-create-release-pr` workflow and using this action in a separate workflow, you can create a status check for release PRs that will only succeed if at least one organization member other than the release author has approved the PR.
 
 ## Usage
 
-_Add examples here_
+This action is designed to be used in conjunction with [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr).
 
-## API
+To use this action, you need to make a small addition to the `action-create-release-pr` workflow, and add a new workflow to your repository.
 
-_Add examples here_
+- [`.github/workflows/create-release-pr.yml`](https://github.com/MetaMask/action-require-additional-reviewer/blob/main/.github/workflows/create-release-pr.yml)
+- [`.github/workflows/require-additional-reviewer.yml`](https://github.com/MetaMask/action-require-additional-reviewer/blob/main/.github/workflows/require-additional-reviewer.yml)
+  \_ **This workflow file self-references this action with the string "`/.`". Replace that string with "`MetaMask/action-require-additional-reviewer@v1`" in your workflow.**
+
+Once the Require Additional Reviewer workflow has run once, you can add it as a mandatory check in your repository branch protection settings.
 
 ## Contributing
 
@@ -30,13 +31,13 @@ _Add examples here_
 
 ### Testing and Linting
 
-Run `yarn test` to run the tests once. To run tests on file changes, run `yarn test:watch`.
-
 Run `yarn lint` to run the linter, or run `yarn lint:fix` to run the linter and fix any automatically fixable issues.
 
-### Release & Publishing
+This repository has no tests.
 
-The project follows the same release process as the other libraries in the MetaMask organization. The GitHub Actions [`action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr) and [`action-publish-release`](https://github.com/MetaMask/action-publish-release) are used to automate the release process; see those repositories for more information about how they work.
+### Releasing
+
+The project follows the same release process as the other GitHub Actions in the MetaMask organization. The GitHub Actions [`action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr) and [`action-publish-release`](https://github.com/MetaMask/action-publish-release) are used to automate the release process; see those repositories for more information about how they work.
 
 1. Choose a release version.
 
@@ -64,10 +65,5 @@ The project follows the same release process as the other libraries in the MetaM
 
 6. Squash & Merge the release.
 
-   - This should trigger the [`action-publish-release`](https://github.com/MetaMask/action-publish-release) workflow to tag the final release commit and publish the release on GitHub.
-
-7. Publish the release on npm.
-
-   - Be very careful to use a clean local environment to publish the release, and follow exactly the same steps used during CI.
-   - Use `npm publish --dry-run` to examine the release contents to ensure the correct files are included. Compare to previous releases if necessary (e.g. using `https://unpkg.com/browse/[package name]@[package version]/`).
-   - Once you are confident the release contents are correct, publish the release using `npm publish`.
+   - This should trigger the [`action-publish-release`](https://github.com/MetaMask/action-publish-release) workflow to tag the final release commit and publish the release on GitHub. Since this repository is a GitHub Action, this completes the release process.
+     - Note that the shorthand major version tag is automatically updated when the release PR is merged. See [`publish-release.yml`](https://github.com/MetaMask/action-require-additional-reviewer/blob/main/.github/workflows/publish-release.yml) for details.

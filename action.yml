@@ -1,0 +1,17 @@
+name: 'Require Additional Reviewer'
+description: 'Require additional reviewers of automatically created Pull Requests.'
+
+inputs:
+  artifacts-path:
+    description: 'The path to the directory where this action will look for its required artifacts.'
+    default: 'gh-action__release-authors'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Check for Additional Reviewers
+      shell: bash
+      run: |
+        ${{ github.action_path }}/scripts/require-additional-reviewer.sh \
+          ${{ inputs.artifacts-path }}
