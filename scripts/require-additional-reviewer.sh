@@ -67,7 +67,9 @@ NUM_OTHER_APPROVING_REVIEWERS=$(
   jq '.reviews |
     map(select(
       .state == "APPROVED" and (
-        .authorAssociation == "MEMBER" or .authorAssociation == "OWNER"
+        .authorAssociation == "COLLABORATOR" or
+        .authorAssociation == "MEMBER" or
+        .authorAssociation == "OWNER"
       )
     )) |
     map(.author.login) |
@@ -86,7 +88,7 @@ exit 1
 # Relevant GitHub documentation:
 # https://docs.github.com/en/graphql/reference/enums#pullrequestreviewstate
 # https://docs.github.com/en/graphql/reference/enums#commentauthorassociation
-#
+
 # Related, but not exactly the same as "gh pr view":
 # https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request
 #
