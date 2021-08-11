@@ -6,8 +6,7 @@ set -o pipefail
 
 # This script downloads the artifact with the specified name to the specified
 # directory, from the successful workflow run corresponding to the specified
-# workflow name, pull request base branch head commit hash, and GitHub
-# repository identifier.
+# workflow name, pull request base branch, and GitHub repository identifier.
 
 # The path to the directory where the artifact files will be downloaded.
 ARTIFACTS_DIR_PATH=${1}
@@ -34,10 +33,10 @@ if [[ -z $WORKFLOW_NAME ]]; then
   exit 1
 fi
 
-PULL_REQUEST_HEAD_SHA=${4}
+PULL_REQUEST_BASE_BRANCH=${4}
 
-if [[ -z $PULL_REQUEST_HEAD_SHA ]]; then
-  echo "Error: No pull request base branch HEAD ref specified."
+if [[ -z $PULL_REQUEST_BASE_BRANCH ]]; then
+  echo "Error: No pull request base branch specified."
   exit 1
 fi
 
@@ -47,6 +46,14 @@ if [[ -z $GITHUB_REPOSITORY ]]; then
   echo "Error: No GitHub repository identifier specified."
   exit 1
 fi
+
+GIT_MERGE_BASE_SHA=$(git merge-base HEAD "$PULL_REQUEST_BASE_BRANCH")
+
+if [[ -z $GIT_MERGE_BASE_SHA ]]; then
+  echo "Error: \"git merge base\" did not return a value."
+  exit 1
+fi
+
 
 # We need the ID of the workflow that created the current release PR, in order
 # to download the artifacts of that workflow.
@@ -58,7 +65,7 @@ WORKFLOW_ID=$(
     map(select(
       .name == "'"${WORKFLOW_NAME}"'" and
       (.conclusion | test("^success$"; "i")) and
-      .head_sha == "'"${PULL_REQUEST_HEAD_SHA}"'"
+      .head_sha == "'"${GIT_MERGE_BASE_SHA}"'"
     ))[0].id
   '
 )
