@@ -57,7 +57,7 @@ WORKFLOW_ID=$(
   jq '.workflow_runs |
     map(select(
       .name == "'"${WORKFLOW_NAME}"'" and
-      (.conclusion | test("^success$"; "i"))
+      (.conclusion | test("^success$"; "i")) and
       .head_sha == '"${PULL_REQUEST_HEAD_SHA}"'
     ))[0].id
   '
