@@ -11,7 +11,7 @@ jobs:
       pull-requests: read
     # The string argument must match the release branch PR name prefix of
     # MetaMask/action-create-release-pr.
-    if: startsWith(github.event.pull_request.head.ref, 'release/')
+    if: startsWith(github.head_ref, 'release/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,4 +20,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           github-repository: ${{ github.repository }}
-          pull-request-head-sha: ${{ github.event.pull_request.head.sha }}
+          pull-request-base-sha: ${{ github.event.pull_request.base.sha }}
