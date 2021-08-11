@@ -11,13 +11,17 @@ It is designed to be used with [`MetaMask/action-create-release-pr`](https://git
 
 This action is designed to be used in conjunction with [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr).
 
-To use this action, you need to make a small addition to the `action-create-release-pr` workflow, and add a new workflow to your repository.
+To use this action, you need to make a small addition to the `action-create-release-pr` workflow of your repository, and add a new workflow that uses this action:
 
 - [`.github/workflows/create-release-pr.yml`](https://github.com/MetaMask/action-require-additional-reviewer/blob/main/.github/workflows/create-release-pr.yml)
 - [`.github/workflows/require-additional-reviewer.yml`](https://github.com/MetaMask/action-require-additional-reviewer/blob/main/.github/workflows/require-additional-reviewer.yml)
-  \_ **This workflow file self-references this action with the string "`/.`". Replace that string with "`MetaMask/action-require-additional-reviewer@v1`" in your workflow.**
+  - **This workflow file self-references this action with the string "`/.`". Replace that string with "`MetaMask/action-require-additional-reviewer@v1`" in your workflow.**
 
 Once the Require Additional Reviewer workflow has run once, you can add it as a mandatory check in your repository branch protection settings.
+
+Note that, if you use this action, you **must not** rebase your release PRs before merging them back into the base branch.
+This action uses the commit hash of the base branch head to identify the workflow that created the release PR, in order to download the artifacts of that workflow.
+Merging the base branch into the release branch is fine.
 
 ## Contributing
 

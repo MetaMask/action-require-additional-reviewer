@@ -2,6 +2,23 @@ name: 'Require Additional Reviewer'
 description: 'Require additional reviewers of automatically created Pull Requests.'
 
 inputs:
+  # required, no defaults
+  github-repository:
+    description: 'The github.repository context value for the current workflow, e.g. MetaMask/metamask-extension.'
+    required: true
+  pull-request-head-sha:
+    description: 'The head ref (SHA) of the pull request base branch.'
+    required: true
+
+  # required, but have defaults
+  artifact-name:
+    description: 'The name of the artifact containing the release PR author name.'
+    default: 'release-authors'
+    required: true
+  artifact-workflow-name:
+    description: 'The name of the workflow that writes the release author artifact.'
+    default: 'Create Release Pull Request'
+    required: true
   artifacts-path:
     description: 'The path to the directory where this action will look for its required artifacts.'
     default: 'gh-action__release-authors'
@@ -10,6 +27,15 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Download Release Author Artifact
+      shell: bash
+      run: |
+        ${{ github.action_path }}/scripts/download-artifact.sh \
+          ${{ inputs.artifacts-path }} \
+          ${{ inputs.artifact-name }} \
+          ${{ inputs.artifact-workflow-name }} \
+          ${{ inputs.pull-request-head-sha }} \
+          ${{ inputs.github-repository }}
     - name: Check for Additional Reviewers
       shell: bash
       run: |

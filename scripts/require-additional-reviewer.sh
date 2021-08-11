@@ -37,7 +37,7 @@ fi
 
 PR_NUMBER=$(echo "${PR_INFO}" | jq '.number')
 
-if [[ -z $PR_NUMBER ]]; then
+if [[ -z $PR_NUMBER || "${PR_NUMBER}" == null ]]; then
   echo 'Error: "gh pr view" did not return a PR number.'
   exit 1
 fi
@@ -67,9 +67,7 @@ NUM_OTHER_APPROVING_REVIEWERS=$(
   jq '.reviews |
     map(select(
       .state == "APPROVED" and (
-        .authorAssociation == "COLLABORATOR" or
-        .authorAssociation == "MEMBER" or
-        .authorAssociation == "OWNER"
+        .authorAssociation | test("^collaborator|member|owner$"; "i")
       )
     )) |
     map(.author.login) |
