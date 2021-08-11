@@ -66,7 +66,7 @@ NUM_OTHER_APPROVING_REVIEWERS=$(
   echo "${PR_INFO}" |
   jq '.reviews |
     map(select(
-      (.state | test("^approved$", "i")) and
+      (.state | test("^approved$"; "i")) and
       (.authorAssociation | test("^collaborator|member|owner$"; "i"))
     )) |
     map(.author.login) |
