@@ -34,10 +34,10 @@ if [[ -z $WORKFLOW_NAME ]]; then
   exit 1
 fi
 
-PULL_REQUEST_HEAD_SHA=${4}
+PULL_REQUEST_BASE_SHA=${4}
 
-if [[ -z $PULL_REQUEST_HEAD_SHA ]]; then
-  echo "Error: No pull request base branch HEAD ref specified."
+if [[ -z $PULL_REQUEST_BASE_SHA ]]; then
+  echo "Error: No pull request base branch HEAD commit specified."
   exit 1
 fi
 
@@ -58,7 +58,7 @@ WORKFLOW_ID=$(
     map(select(
       .name == "'"${WORKFLOW_NAME}"'" and
       (.conclusion | test("^success$"; "i")) and
-      .head_sha == "'"${PULL_REQUEST_HEAD_SHA}"'"
+      .head_sha == "'"${PULL_REQUEST_BASE_SHA}"'"
     ))[0].id
   '
 )
