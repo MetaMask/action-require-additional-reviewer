@@ -6,6 +6,7 @@ on:
 jobs:
   require-additional-reviewer:
     permissions:
+      actions: read
       contents: read
       pull-requests: read
     # The string argument must match the release branch PR name prefix of
@@ -14,10 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: release-authors
-          path: gh-action__release-authors
       - uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          artifacts-path: gh-action__release-authors
+          github-repository: ${{ github.repository }}
+          pull-request-head-sha: ${{ github.event.pull_request.head.sha }}
