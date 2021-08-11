@@ -79,6 +79,7 @@ fi
 # them to the specified artifacts directory.
 mkdir -p "$ARTIFACTS_DIR_PATH" && cd "$ARTIFACTS_DIR_PATH"
 gh run download "$WORKFLOW_ID" -n "$ARTIFACT_NAME"
+echo "Artifact successfully downloaded!"
 
 # gh api /repos/ORG_NAME/REPO_NAME/actions/runs
 # 

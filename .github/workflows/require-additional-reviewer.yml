@@ -23,3 +23,4 @@ jobs:
         with:
           github-repository: ${{ github.repository }}
           pull-request-base-branch: ${{ github.base_ref }}
+          pull-request-number: ${{ github.event.pull_request.number }}

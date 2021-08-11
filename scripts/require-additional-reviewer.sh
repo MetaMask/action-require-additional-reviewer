@@ -26,19 +26,10 @@ if [[ -z $ARTIFACTS_DIR_PATH ]]; then
   exit 1
 fi
 
-# Get the JSON data from GitHub. For the expect format of this data, see the
-# end of this file.
-PR_INFO=$(gh pr view --json number,reviews)
+PR_NUMBER=${2}
 
-if [[ -z $PR_INFO ]]; then
-  echo 'Error: "gh pr view" returned an empty value.'
-  exit 1
-fi
-
-PR_NUMBER=$(echo "${PR_INFO}" | jq '.number')
-
-if [[ -z $PR_NUMBER || "${PR_NUMBER}" == null ]]; then
-  echo 'Error: "gh pr view" did not return a PR number.'
+if [[ -z $PR_NUMBER ]]; then
+  echo "Error: No pull request number specified."
   exit 1
 fi
 
@@ -62,13 +53,21 @@ echo \
   "Identified author of release PR #${PR_NUMBER} as \"${ACTION_INITIATOR}\"." \
   "Looking for approving reviews from other organization members..."
 
+# Get the JSON data from GitHub. For the expected format of this data, see the
+# end of this file.
+PR_INFO=$(gh pr view "$PR_NUMBER" --json reviews)
+
+if [[ -z $PR_INFO ]]; then
+  echo 'Error: "gh pr view" returned an empty value.'
+  exit 1
+fi
+
 NUM_OTHER_APPROVING_REVIEWERS=$( 
   echo "${PR_INFO}" |
   jq '.reviews |
     map(select(
-      .state == "APPROVED" and (
-        .authorAssociation | test("^collaborator|member|owner$"; "i")
-      )
+      (.state | test("^approved$"; "i")) and
+      (.authorAssociation | test("^collaborator|member|owner$"; "i"))
     )) |
     map(.author.login) |
     map(select(. != "'"${ACTION_INITIATOR}"'")) |
