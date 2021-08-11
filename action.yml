@@ -9,6 +9,9 @@ inputs:
   pull-request-base-sha:
     description: 'The hash of the target commit of the pull request base branch.'
     required: true
+  pull-request-number:
+    description: 'The release pull request number.'
+    required: true
 
   # required, but have defaults
   artifact-name:
@@ -40,4 +43,5 @@ runs:
       shell: bash
       run: |
         ${{ github.action_path }}/scripts/require-additional-reviewer.sh \
-          "${{ inputs.artifacts-path }}"
+          "${{ inputs.artifacts-path }}" \
+          "${{ inputs.pull-request-number }}"

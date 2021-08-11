@@ -21,3 +21,4 @@ jobs:
         with:
           github-repository: ${{ github.repository }}
           pull-request-base-sha: ${{ github.event.pull_request.base.sha }}
+          pull-request-number: ${{ github.event.pull_request.number }}
