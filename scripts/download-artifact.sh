@@ -56,7 +56,7 @@ fi
 # branch, if any.
 
 OLDEST_PR_BRANCH_MERGE_COMMIT=$(
-  git rev-list "$PULL_REQUEST_BASE_BRANCH"..HEAD --merges --ancestry-path --reverse |
+  git rev-list origin/"$PULL_REQUEST_BASE_BRANCH"..HEAD --merges --ancestry-path --reverse |
   grep -o -m 1 '\w\+'
 )
 
