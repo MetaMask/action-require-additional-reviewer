@@ -40,6 +40,8 @@ if [[ -z $PULL_REQUEST_BASE_BRANCH ]]; then
   exit 1
 fi
 
+PULL_REQUEST_BASE_BRANCH="origin/${PULL_REQUEST_BASE_BRANCH}"
+
 GITHUB_REPOSITORY=${5}
 
 if [[ -z $GITHUB_REPOSITORY ]]; then
@@ -56,7 +58,7 @@ fi
 # branch, if any.
 
 OLDEST_PR_BRANCH_MERGE_COMMIT=$(
-  git rev-list origin/"$PULL_REQUEST_BASE_BRANCH"..HEAD --merges --ancestry-path --reverse |
+  git rev-list "$PULL_REQUEST_BASE_BRANCH"..HEAD --merges --ancestry-path --reverse |
   grep -o -m 1 '\w\+'
 )
 
