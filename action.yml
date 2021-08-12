@@ -6,8 +6,8 @@ inputs:
   github-repository:
     description: 'The github.repository context value for the current workflow, e.g. MetaMask/metamask-extension.'
     required: true
-  pull-request-base-sha:
-    description: 'The hash of the target commit of the pull request base branch.'
+  pull-request-base-branch:
+    description: 'The name of the pull request base branch.'
     required: true
   pull-request-number:
     description: 'The release pull request number.'
@@ -37,7 +37,7 @@ runs:
           "${{ inputs.artifacts-path }}" \
           "${{ inputs.artifact-name }}" \
           "${{ inputs.artifact-workflow-name }}" \
-          "${{ inputs.pull-request-base-sha }}" \
+          "${{ inputs.pull-request-base-branch }}" \
           "${{ inputs.github-repository }}"
     - name: Check for Additional Reviewers
       shell: bash
