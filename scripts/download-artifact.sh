@@ -40,6 +40,8 @@ if [[ -z $PULL_REQUEST_BASE_BRANCH ]]; then
   exit 1
 fi
 
+PULL_REQUEST_BASE_BRANCH="origin/${PULL_REQUEST_BASE_BRANCH}"
+
 GITHUB_REPOSITORY=${5}
 
 if [[ -z $GITHUB_REPOSITORY ]]; then
