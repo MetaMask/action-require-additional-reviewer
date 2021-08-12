@@ -47,10 +47,35 @@ if [[ -z $GITHUB_REPOSITORY ]]; then
   exit 1
 fi
 
-GIT_MERGE_BASE_SHA=$(git merge-base HEAD "$PULL_REQUEST_BASE_BRANCH")
+# Next, we need to find the youngest common ancestor commit between the PR
+# branch and the base branch. Any merge commits are assumed to be merges of
+# changes from the base branch into the release PR branch.
+# (i.e., updating the PR branch on GitHub)
+#
+# We check for any merge commits, grabbing the oldest merge commit on the PR
+# branch, if any.
 
-if [[ -z $GIT_MERGE_BASE_SHA ]]; then
-  echo "Error: \"git merge base\" did not return a value."
+OLDEST_PR_BRANCH_MERGE_COMMIT=$(
+  git rev-list "$PULL_REQUEST_BASE_BRANCH"..HEAD --merges --ancestry-path --reverse |
+  grep -o -m 1 '\w\+'
+)
+
+if [[ -n $OLDEST_PR_BRANCH_MERGE_COMMIT ]]; then
+  # If there is any merge commit on the PR branch, find the merge base commit of
+  # its parent commit and the base branch.
+  YOUNGEST_COMMON_ANCESTOR_COMMIT=$(
+    git merge-base "$OLDEST_PR_BRANCH_MERGE_COMMIT"^ "$PULL_REQUEST_BASE_BRANCH"
+  )
+else
+  # If there are no merge commits on the PR branch, just find the merge base
+  # commit of the HEAD of the PR branch and the base branch.
+  YOUNGEST_COMMON_ANCESTOR_COMMIT=$(
+    git merge-base HEAD "$PULL_REQUEST_BASE_BRANCH"
+  )
+fi
+
+if [[ -z $YOUNGEST_COMMON_ANCESTOR_COMMIT ]]; then
+  echo "Error: Failed to compute the youngest common ancestor of the base branch and the PR branch."
   exit 1
 fi
 
@@ -65,7 +90,7 @@ WORKFLOW_ID=$(
     map(select(
       .name == "'"${WORKFLOW_NAME}"'" and
       (.conclusion | test("^success$"; "i")) and
-      .head_sha == "'"${GIT_MERGE_BASE_SHA}"'"
+      .head_sha == "'"${YOUNGEST_COMMON_ANCESTOR_COMMIT}"'"
     ))[0].id
   '
 )
