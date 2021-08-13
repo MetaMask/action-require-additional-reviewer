@@ -30,6 +30,6 @@ fi
 
 git remote -v
 git status
-git log --oneline
+git log --oneline -n 3
 
 echo "::set-output name=is-release::$IS_RELEASE"
