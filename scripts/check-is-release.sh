@@ -28,4 +28,8 @@ else
   IS_RELEASE="false"
 fi
 
+git remote -v
+git status
+git log --oneline
+
 echo "::set-output name=is-release::$IS_RELEASE"
