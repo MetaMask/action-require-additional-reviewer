@@ -87,7 +87,13 @@ fi
 #
 # See the end of the file for details on the response value from GitHub.
 WORKFLOW_ID=$(
-  gh api "/repos/${GITHUB_REPOSITORY}/actions/runs" |
+  gh api "/repos/${GITHUB_REPOSITORY}/actions/runs" \
+    -X "GET" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -f "branch=$PULL_REQUEST_BASE_BRANCH" \
+    -f "event=workflow_dispatch" \
+    -f "per_page=100" \
+    -f "status=success" |
   jq '.workflow_runs |
     map(select(
       .name == "'"${WORKFLOW_NAME}"'" and
