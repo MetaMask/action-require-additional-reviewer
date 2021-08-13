@@ -23,14 +23,21 @@ if [[ -z $GITHUB_REPOSITORY ]]; then
   exit 1
 fi
 
-IS_RELEASE=${3}
+GITHUB_STATUS_NAME=${3}
+
+if [[ -z $GITHUB_STATUS_NAME ]]; then
+  echo 'Error: No GitHub status name specified.'
+  exit 1
+fi
+
+IS_RELEASE=${4}
 
 if [[ -z $IS_RELEASE ]]; then
   echo 'Error: No "is release" input specified.'
   exit 1
 fi
 
-NUM_OTHER_APPROVING_REVIEWERS=${4}
+NUM_OTHER_APPROVING_REVIEWERS=${5}
 
 if [[ $IS_RELEASE == "true" && -z $NUM_OTHER_APPROVING_REVIEWERS ]]; then
   echo "Error: No count of other approving reviewers specified."
@@ -58,10 +65,9 @@ fi
 gh api "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${HEAD_COMMIT_SHA}" \
   -X "POST" \
   -H "Accept: application/vnd.github.v3+json" \
-  -f context="MetaMask/action-require-additional-reviewer" \
+  -f context="$GITHUB_STATUS_NAME" \
   -f description="$COMMIT_STATUS_DESCRIPTION" \
-  -f state="$COMMIT_STATUS" \
-  -f target_url="https://github.com/MetaMask/action-require-additional-reviewer"
+  -f state="$COMMIT_STATUS"
 
 # The action should never fail, only set a status for the release branch HEAD
 # commit.
