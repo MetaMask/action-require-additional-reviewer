@@ -41,8 +41,8 @@ runs:
       run: |
         if [[ "${{ steps.check-branch-prefix.outputs.is-release }}" == "true" ]]; then
           ${{ github.action_path }}/scripts/download-artifact.sh \
-            "${{ github.base_ref }}" \
             "${{ github.repository }}" \
+            "${{ github.base_ref }}" \
             "${{ inputs.artifacts-path }}" \
             "${{ inputs.artifact-name }}" \
             "${{ inputs.artifact-workflow-name }}"

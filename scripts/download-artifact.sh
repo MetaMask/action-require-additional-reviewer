@@ -8,7 +8,14 @@ set -o pipefail
 # directory, from the successful workflow run corresponding to the specified
 # workflow name, pull request base branch, and GitHub repository identifier.
 
-PULL_REQUEST_BASE_BRANCH=${1}
+GITHUB_REPOSITORY=${1}
+
+if [[ -z $GITHUB_REPOSITORY ]]; then
+  echo "Error: No GitHub repository identifier specified."
+  exit 1
+fi
+
+PULL_REQUEST_BASE_BRANCH=${2}
 
 if [[ -z $PULL_REQUEST_BASE_BRANCH ]]; then
   echo "Error: No pull request base branch specified."
@@ -16,13 +23,6 @@ if [[ -z $PULL_REQUEST_BASE_BRANCH ]]; then
 fi
 
 PULL_REQUEST_BASE_BRANCH="origin/${PULL_REQUEST_BASE_BRANCH}"
-
-GITHUB_REPOSITORY=${2}
-
-if [[ -z $GITHUB_REPOSITORY ]]; then
-  echo "Error: No GitHub repository identifier specified."
-  exit 1
-fi
 
 # The path to the directory where the artifact files will be downloaded.
 ARTIFACTS_DIR_PATH=${3}
