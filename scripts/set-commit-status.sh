@@ -20,7 +20,7 @@ fi
 
 NUM_OTHER_APPROVING_REVIEWERS=${3}
 
-if [[ -z $NUM_OTHER_APPROVING_REVIEWERS ]]; then
+if [[ $IS_RELEASE == "true" && -z $NUM_OTHER_APPROVING_REVIEWERS ]]; then
   echo "Error: No count of other approving reviewers specified."
   exit 1
 fi
