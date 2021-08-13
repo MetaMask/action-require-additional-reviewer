@@ -4,10 +4,22 @@ set -x
 set -e
 set -o pipefail
 
+# This PR checks whether the current PR meets the additional reviewer
+# requirement for release PRs. Non-release PRs succeed by default.
+# It uses the GitHub Status API to accomplish this. See the actual API call
+# at the end of the file for more details.
+
 GITHUB_REPOSITORY=${1}
 
 if [[ -z $GITHUB_REPOSITORY ]]; then
   echo "Error: No GitHub repository identifier specified."
+  exit 1
+fi
+
+HEAD_COMMIT_SHA=${1}
+
+if [[ -z $GITHUB_REPOSITORY ]]; then
+  echo "Error: No head commit SHA specified."
   exit 1
 fi
 
@@ -25,17 +37,9 @@ if [[ $IS_RELEASE == "true" && -z $NUM_OTHER_APPROVING_REVIEWERS ]]; then
   exit 1
 fi
 
-HEAD_COMMIT_SHA=$(git show-ref -s HEAD)
-
-if [[ -z $HEAD_COMMIT_SHA ]]; then
-  echo "Error: \"git show-ref -s HEAD\" returned an empty value."
-  exit 1
-fi
-
-# Finally, compute the status for the current commit and set it via the GitHub API.
+# Compute the status for the current commit and set it via the GitHub API.
 
 COMMIT_STATUS_DESCRIPTION="Whether this PR meets the additional reviewer requirement for releases."
-COMMIT_STATUS="pending" # the default for releases
 
 if [[ "$IS_RELEASE" == "false" ]]; then
   echo "The PR is not a release PR. Setting status to success by default."
@@ -45,6 +49,7 @@ elif (( NUM_OTHER_APPROVING_REVIEWERS > 0 )); then
   COMMIT_STATUS="success"
 else
   echo "Failure: Did not find approving reviews from other organization members."
+  COMMIT_STATUS="pending"
 fi
 
 # https://cli.github.com/manual/gh_api
