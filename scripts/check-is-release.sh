@@ -19,7 +19,7 @@ if [[ -z $RELEASE_BRANCH_PREFIX ]]; then
 fi
 
 PREFIX_MATCH=$(
-  echo "$HEAD_BRANCH_NAME" | grep -o "^$RELEASE_BRANCH_PREFIX"
+  echo "$HEAD_BRANCH_NAME" | grep -o "^$RELEASE_BRANCH_PREFIX" || echo ""
 )
 
 if [[ -n $PREFIX_MATCH ]]; then
