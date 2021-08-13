@@ -37,10 +37,11 @@ if [[ $IS_RELEASE == "true" && -z $NUM_OTHER_APPROVING_REVIEWERS ]]; then
   exit 1
 fi
 
-HEAD_COMMIT_SHA=$(git rev-parse HEAD)
+# git rev-parse doesn't always work, for unknown reasons
+HEAD_COMMIT_SHA=$(git log --format=format:%H | grep -m 1 -o '^\w\+\')
 
 if [[ -z $HEAD_COMMIT_SHA ]]; then
-  echo 'Error: "git rev-parse HEAD" returned an empty value.'
+  echo 'Error: Failed to get HEAD commit sha.'
   exit 1
 fi
 
