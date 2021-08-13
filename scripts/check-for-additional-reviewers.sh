@@ -19,17 +19,17 @@ set -o pipefail
 # initiator has approved the pull request, this script will exit with a non-zero
 # code.
 
-ARTIFACTS_DIR_PATH=${1}
-
-if [[ -z $ARTIFACTS_DIR_PATH ]]; then
-  echo "Error: No artifacts directory specified."
-  exit 1
-fi
-
-PR_NUMBER=${2}
+PR_NUMBER=${1}
 
 if [[ -z $PR_NUMBER ]]; then
   echo "Error: No pull request number specified."
+  exit 1
+fi
+
+ARTIFACTS_DIR_PATH=${2}
+
+if [[ -z $ARTIFACTS_DIR_PATH ]]; then
+  echo "Error: No artifacts directory specified."
   exit 1
 fi
 
@@ -74,13 +74,7 @@ NUM_OTHER_APPROVING_REVIEWERS=$(
     length'
 )
 
-if (( NUM_OTHER_APPROVING_REVIEWERS > 0 )); then
-  echo "Success! Found approving reviews from organization members."
-  exit 0
-fi
-
-echo "Failure: Did not find approving reviews from other organization members."
-exit 1
+echo ::set-output name=num-other-approving-reviewers::"$NUM_OTHER_APPROVING_REVIEWERS"
 
 # Relevant GitHub documentation:
 # https://docs.github.com/en/graphql/reference/enums#pullrequestreviewstate

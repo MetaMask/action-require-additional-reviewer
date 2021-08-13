@@ -5,7 +5,7 @@
 This action can be used to create workflows that require additional reviewers for programmatically created pull requests.
 It is designed to be used with [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr).
 
-`action-create-release-pr` is manually triggered by a GitHub user, but the resulting PR is authored by the GitHub Actions bot. This means that the human release author can merge their own release without third-party review. By modifying the `action-create-release-pr` workflow and using this action in a separate workflow, you can create a status check for release PRs that will only succeed if at least one organization member other than the release author has approved the PR.
+`action-create-release-pr` is manually triggered by a GitHub user, but the resulting PR is authored by the GitHub Actions bot. This means that the human release author can merge their own release without third-party review. By modifying the `action-create-release-pr` workflow and using this action in a separate workflow, a status check will be added to your PRs that you can use to ensure that at least one organization member other than the release author has approved a release PR before it can be merged.
 
 ## Usage
 

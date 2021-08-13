@@ -2,18 +2,6 @@ name: 'Require Additional Reviewer'
 description: 'Require additional reviewers of automatically created Pull Requests.'
 
 inputs:
-  # required, no defaults
-  github-repository:
-    description: 'The github.repository context value for the current workflow, e.g. MetaMask/metamask-extension.'
-    required: true
-  pull-request-base-branch:
-    description: 'The name of the pull request base branch.'
-    required: true
-  pull-request-number:
-    description: 'The release pull request number.'
-    required: true
-
-  # required, but have defaults
   artifact-name:
     description: 'The name of the artifact containing the release PR author name.'
     default: 'release-authors'
@@ -26,22 +14,54 @@ inputs:
     description: 'The path to the directory where this action will look for its required artifacts.'
     default: 'gh-action__release-authors'
     required: true
+  release-branch-prefix:
+    description: 'The prefix of release PR branch names for this repository.'
+    default: 'release/'
+    required: true
+  github-status-name:
+    description: 'The string that will show up as the name of the GitHub status on PRs.'
+    default: 'Additional Reviews for Releases'
+    required: true
 
 runs:
   using: 'composite'
   steps:
+    - name: Check Branch Prefix
+      id: check-branch-prefix
+      shell: bash
+      run: |
+        ${{ github.action_path }}/scripts/check-is-release.sh \
+          "${{ github.head_ref }}" \
+          "${{ inputs.release-branch-prefix }}"
+
     - name: Download Release Author Artifact
       shell: bash
       run: |
-        ${{ github.action_path }}/scripts/download-artifact.sh \
-          "${{ inputs.artifacts-path }}" \
-          "${{ inputs.artifact-name }}" \
-          "${{ inputs.artifact-workflow-name }}" \
-          "${{ inputs.pull-request-base-branch }}" \
-          "${{ inputs.github-repository }}"
+        if [[ "${{ steps.check-branch-prefix.outputs.is-release }}" == "true" ]]; then
+          ${{ github.action_path }}/scripts/download-artifact.sh \
+            "${{ github.repository }}" \
+            "${{ github.base_ref }}" \
+            "${{ inputs.artifacts-path }}" \
+            "${{ inputs.artifact-name }}" \
+            "${{ inputs.artifact-workflow-name }}"
+        fi
+
     - name: Check for Additional Reviewers
+      id: check-additional-reviewers
       shell: bash
       run: |
-        ${{ github.action_path }}/scripts/require-additional-reviewer.sh \
-          "${{ inputs.artifacts-path }}" \
-          "${{ inputs.pull-request-number }}"
+        if [[ "${{ steps.check-branch-prefix.outputs.is-release }}" == "true" ]]; then
+          ${{ github.action_path }}/scripts/check-for-additional-reviewers.sh \
+            "${{ github.event.pull_request.number }}" \
+            "${{ inputs.artifacts-path }}"
+        fi
+
+    - name: Set Commit Status
+      shell: bash
+      run: |
+        ${{ github.action_path }}/scripts/set-commit-status.sh \
+          "${{ github.repository }}" \
+          "${{ github.event.pull_request.head.sha }}" \
+          "${{ inputs.github-status-name }}" \
+          "${{ steps.check-branch-prefix.outputs.is-release }}" \
+          "${{ steps.check-additional-reviewers.outputs.num-other-approving-reviewers }}"
