@@ -58,7 +58,7 @@ fi
 gh api "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${HEAD_COMMIT_SHA}" \
   -X "POST" \
   -H "Accept: application/vnd.github.v3+json" \
-  -d '{
+  -f body='{
     "context": "MetaMask/action-require-additional-reviewer",
     "description": "'"$COMMIT_STATUS_DESCRIPTION"'",
     "state": "'"$COMMIT_STATUS"'",
