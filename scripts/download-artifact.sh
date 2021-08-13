@@ -24,6 +24,8 @@ fi
 
 PULL_REQUEST_BASE_BRANCH="origin/${PULL_REQUEST_BASE_BRANCH}"
 
+# Inputs 3-5 are used to identify the workflow run to download artifacts from.
+
 # The path to the directory where the artifact files will be downloaded.
 ARTIFACTS_DIR_PATH=${3}
 
@@ -39,8 +41,6 @@ if [[ -z $ARTIFACT_NAME ]]; then
   echo "Error: No artifact name specified."
   exit 1
 fi
-
-# Inputs 3-5 are used to identify the workflow run to download artifacts from.
 
 WORKFLOW_NAME=${5}
 
