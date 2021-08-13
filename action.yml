@@ -61,7 +61,6 @@ runs:
       run: |
         ${{ github.action_path }}/scripts/set-commit-status.sh \
           "${{ github.repository }}" \
-          "${{ github.sha }}" \
           "${{ inputs.github-status-name }}" \
           "${{ steps.check-branch-prefix.outputs.is-release }}" \
           "${{ steps.check-additional-reviewers.outputs.num-other-approving-reviewers }}"
