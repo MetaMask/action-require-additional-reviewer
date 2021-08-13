@@ -28,7 +28,7 @@ runs:
       run: |
         ${{ github.action_path }}/scripts/check-is-release.sh \
           "${{ github.head_ref }}" \
-          "{{ inputs.release-branch-prefix }}"
+          "${{ inputs.release-branch-prefix }}"
 
     - name: Download Release Author Artifact
       shell: bash
