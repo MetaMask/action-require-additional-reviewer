@@ -26,19 +26,17 @@ runs:
       id: check-branch-prefix
       shell: bash
       run: |
-        -set x
-        -set e
-        -set o pipefail
-
         PREFIX_MATCH=$(
           echo "${{ github.head_ref }}" | grep -o "^${{ inputs.release-branch-prefix }}"
         )
 
         if [[ -n $PREFIX_MATCH ]]; then
-          echo '::set-output name=is-release::true'
+          IS_RELEASE="true"
         else
-          echo '::set-output name=is-release::false'
+          IS_RELEASE="false"
         fi
+
+        echo "::set-output name=is-release::$IS_RELEASE"
 
     - name: Download Release Author Artifact
       shell: bash
