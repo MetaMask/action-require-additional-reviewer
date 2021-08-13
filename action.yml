@@ -26,6 +26,10 @@ runs:
       id: check-branch-prefix
       shell: bash
       run: |
+        -set x
+        -set e
+        -set o pipefail
+
         PREFIX_MATCH=$(
           echo "${{ github.head_ref }}" | grep -o "^${{ inputs.release-branch-prefix }}"
         )
