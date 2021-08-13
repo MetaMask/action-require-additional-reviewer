@@ -58,12 +58,10 @@ fi
 gh api "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${HEAD_COMMIT_SHA}" \
   -X "POST" \
   -H "Accept: application/vnd.github.v3+json" \
-  -f body='{
-    "context": "MetaMask/action-require-additional-reviewer",
-    "description": "'"$COMMIT_STATUS_DESCRIPTION"'",
-    "state": "'"$COMMIT_STATUS"'",
-    "target_url": "https://github.com/MetaMask/action-require-additional-reviewer"
-  }'
+  -f state="$COMMIT_STATUS" \
+  -f context="MetaMask/action-require-additional-reviewer" \
+  -f description="$COMMIT_STATUS_DESCRIPTION" \
+  -f target_url="https://github.com/MetaMask/action-require-additional-reviewer"
 
 # The action should never fail, only set a status for the release branch HEAD
 # commit.
