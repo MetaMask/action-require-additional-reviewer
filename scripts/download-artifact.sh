@@ -22,7 +22,7 @@ if [[ -z $PULL_REQUEST_BASE_BRANCH ]]; then
   exit 1
 fi
 
-PULL_REQUEST_BASE_BRANCH="origin/${PULL_REQUEST_BASE_BRANCH}"
+PREFIXED_PULL_REQUEST_BASE_BRANCH="origin/${PULL_REQUEST_BASE_BRANCH}"
 
 # Inputs 3-5 are used to identify the workflow run to download artifacts from.
 
@@ -58,7 +58,7 @@ fi
 # branch, if any.
 
 OLDEST_PR_BRANCH_MERGE_COMMIT=$(
-  git rev-list "$PULL_REQUEST_BASE_BRANCH"..HEAD --merges --reverse |
+  git rev-list "$PREFIXED_PULL_REQUEST_BASE_BRANCH"..HEAD --merges --reverse |
   grep -o -m 1 '\w\+'
 )
 
@@ -66,13 +66,13 @@ if [[ -n $OLDEST_PR_BRANCH_MERGE_COMMIT ]]; then
   # If there is any merge commit on the PR branch, find the merge base commit of
   # its parent commit and the base branch.
   YOUNGEST_COMMON_ANCESTOR_COMMIT=$(
-    git merge-base "$OLDEST_PR_BRANCH_MERGE_COMMIT"^ "$PULL_REQUEST_BASE_BRANCH"
+    git merge-base "$OLDEST_PR_BRANCH_MERGE_COMMIT"^ "$PREFIXED_PULL_REQUEST_BASE_BRANCH"
   )
 else
   # If there are no merge commits on the PR branch, just find the merge base
   # commit of the HEAD of the PR branch and the base branch.
   YOUNGEST_COMMON_ANCESTOR_COMMIT=$(
-    git merge-base HEAD "$PULL_REQUEST_BASE_BRANCH"
+    git merge-base HEAD "$PREFIXED_PULL_REQUEST_BASE_BRANCH"
   )
 fi
 
