@@ -31,7 +31,7 @@ runs:
       shell: bash
       run: |
         ${{ github.action_path }}/scripts/check-is-release.sh \
-          "${{ github.head_ref }}" \
+          "${{ github.event.pull_request.head.ref }}"
           "${{ inputs.release-branch-prefix }}"
 
     - name: Download Release Author Artifact
@@ -40,7 +40,7 @@ runs:
         if [[ "${{ steps.check-branch-prefix.outputs.is-release }}" == "true" ]]; then
           ${{ github.action_path }}/scripts/download-artifact.sh \
             "${{ github.repository }}" \
-            "${{ github.base_ref }}" \
+            "${{ github.event.pull_request.base.ref }}"
             "${{ inputs.artifacts-path }}" \
             "${{ inputs.artifact-name }}" \
             "${{ inputs.artifact-workflow-name }}"
