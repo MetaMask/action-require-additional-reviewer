@@ -16,31 +16,31 @@ if [[ -z $GITHUB_REPOSITORY ]]; then
   exit 1
 fi
 
-HEAD_COMMIT_SHA=${2}
-
-if [[ -z $GITHUB_REPOSITORY ]]; then
-  echo "Error: No head commit SHA specified."
-  exit 1
-fi
-
-GITHUB_STATUS_NAME=${3}
+GITHUB_STATUS_NAME=${2}
 
 if [[ -z $GITHUB_STATUS_NAME ]]; then
   echo 'Error: No GitHub status name specified.'
   exit 1
 fi
 
-IS_RELEASE=${4}
+IS_RELEASE=${3}
 
 if [[ -z $IS_RELEASE ]]; then
   echo 'Error: No "is release" input specified.'
   exit 1
 fi
 
-NUM_OTHER_APPROVING_REVIEWERS=${5}
+NUM_OTHER_APPROVING_REVIEWERS=${4}
 
 if [[ $IS_RELEASE == "true" && -z $NUM_OTHER_APPROVING_REVIEWERS ]]; then
   echo "Error: No count of other approving reviewers specified."
+  exit 1
+fi
+
+HEAD_COMMIT_SHA=$(git rev-parse HEAD)
+
+if [[ -z $HEAD_COMMIT_SHA ]]; then
+  echo 'Error: "git rev-parse HEAD" returned an empty value.'
   exit 1
 fi
 
