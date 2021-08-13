@@ -2,6 +2,7 @@ name: Require Additional Reviewer for Releases
 
 on:
   pull_request:
+  pull_request_review:
 
 jobs:
   require-additional-reviewer:
@@ -9,9 +10,7 @@ jobs:
       actions: read
       contents: read
       pull-requests: read
-    # The string argument must match the release branch PR name prefix of
-    # MetaMask/action-create-release-pr.
-    if: startsWith(github.head_ref, 'release/')
+      statuses: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,7 +19,3 @@ jobs:
       - uses: ./
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          github-repository: ${{ github.repository }}
-          pull-request-base-branch: ${{ github.base_ref }}
-          pull-request-number: ${{ github.event.pull_request.number }}

@@ -8,32 +8,14 @@ set -o pipefail
 # directory, from the successful workflow run corresponding to the specified
 # workflow name, pull request base branch, and GitHub repository identifier.
 
-# The path to the directory where the artifact files will be downloaded.
-ARTIFACTS_DIR_PATH=${1}
+GITHUB_REPOSITORY=${1}
 
-if [[ -z $ARTIFACTS_DIR_PATH ]]; then
-  echo "Error: No artifacts directory specified."
+if [[ -z $GITHUB_REPOSITORY ]]; then
+  echo "Error: No GitHub repository identifier specified."
   exit 1
 fi
 
-# The name of the artifact to download.
-ARTIFACT_NAME=${2}
-
-if [[ -z $ARTIFACT_NAME ]]; then
-  echo "Error: No artifact name specified."
-  exit 1
-fi
-
-# Inputs 3-5 are used to identify the workflow run to download artifacts from.
-
-WORKFLOW_NAME=${3}
-
-if [[ -z $WORKFLOW_NAME ]]; then
-  echo "Error: No workflow name specified."
-  exit 1
-fi
-
-PULL_REQUEST_BASE_BRANCH=${4}
+PULL_REQUEST_BASE_BRANCH=${2}
 
 if [[ -z $PULL_REQUEST_BASE_BRANCH ]]; then
   echo "Error: No pull request base branch specified."
@@ -42,10 +24,28 @@ fi
 
 PULL_REQUEST_BASE_BRANCH="origin/${PULL_REQUEST_BASE_BRANCH}"
 
-GITHUB_REPOSITORY=${5}
+# Inputs 3-5 are used to identify the workflow run to download artifacts from.
 
-if [[ -z $GITHUB_REPOSITORY ]]; then
-  echo "Error: No GitHub repository identifier specified."
+# The path to the directory where the artifact files will be downloaded.
+ARTIFACTS_DIR_PATH=${3}
+
+if [[ -z $ARTIFACTS_DIR_PATH ]]; then
+  echo "Error: No artifacts directory specified."
+  exit 1
+fi
+
+# The name of the artifact to download.
+ARTIFACT_NAME=${4}
+
+if [[ -z $ARTIFACT_NAME ]]; then
+  echo "Error: No artifact name specified."
+  exit 1
+fi
+
+WORKFLOW_NAME=${5}
+
+if [[ -z $WORKFLOW_NAME ]]; then
+  echo "Error: No workflow name specified."
   exit 1
 fi
 
