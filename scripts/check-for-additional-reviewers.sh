@@ -98,12 +98,13 @@ NUM_OTHER_APPROVING_REVIEWERS=$(
 
 echo ::set-output name=num-other-approving-reviewers::"$NUM_OTHER_APPROVING_REVIEWERS"
 
-# Relevant GitHub documentation:
+# API endpoint documentation
+# https://docs.github.com/en/rest/reference/pulls#reviews
+
+# Relevant enums
 # https://docs.github.com/en/graphql/reference/enums#pullrequestreviewstate
 # https://docs.github.com/en/graphql/reference/enums#commentauthorassociation
 
-# https://docs.github.com/en/rest/reference/pulls#reviews
-#
 # gh api /repos/{owner}/{repo}/pulls/{pull_number}/reviews \
 #
 # {
