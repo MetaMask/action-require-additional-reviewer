@@ -115,7 +115,7 @@ gh run download "$WORKFLOW_ID" -n "$ARTIFACT_NAME"
 echo "Artifact successfully downloaded!"
 
 # https://docs.github.com/en/rest/reference/actions#list-workflow-runs-for-a-repository
-
+#
 # https://docs.github.com/en/graphql/reference/objects#workflowrun
 # https://docs.github.com/en/graphql/reference/objects#checkrun
 # https://docs.github.com/en/graphql/reference/enums#checkconclusionstate
