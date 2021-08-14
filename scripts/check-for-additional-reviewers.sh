@@ -19,17 +19,31 @@ set -o pipefail
 # initiator has approved the pull request, this script will exit with a non-zero
 # code.
 
-PR_NUMBER=${1}
+GITHUB_REPOSITORY=${1}
+
+if [[ -z $GITHUB_REPOSITORY ]]; then
+  echo "Error: No GitHub repository identifier specified."
+  exit 1
+fi
+
+PR_NUMBER=${2}
 
 if [[ -z $PR_NUMBER ]]; then
   echo "Error: No pull request number specified."
   exit 1
 fi
 
-ARTIFACTS_DIR_PATH=${2}
+ARTIFACTS_DIR_PATH=${3}
 
 if [[ -z $ARTIFACTS_DIR_PATH ]]; then
   echo "Error: No artifacts directory specified."
+  exit 1
+fi
+
+READ_ORG_TOKEN=${4}
+
+if [[ -z $READ_ORG_TOKEN ]]; then
+  echo "Error: No access token specified."
   exit 1
 fi
 
@@ -55,7 +69,13 @@ echo \
 
 # Get the JSON data from GitHub. For the expected format of this data, see the
 # end of this file.
-PR_INFO=$(gh pr view "$PR_NUMBER" --json reviews)
+PR_INFO=$(
+  gh api "/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews" \
+    -X "GET" \
+    -H "authorization: Bearer $READ_ORG_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -f "per_page=100"
+)
 
 if [[ -z $PR_INFO ]]; then
   echo 'Error: "gh pr view" returned an empty value.'
@@ -64,12 +84,12 @@ fi
 
 NUM_OTHER_APPROVING_REVIEWERS=$( 
   echo "${PR_INFO}" |
-  jq '.reviews |
+  jq '. |
     map(select(
       (.state | test("^approved$"; "i")) and
-      (.authorAssociation | test("^collaborator|member|owner$"; "i"))
+      (.author_association | test("^collaborator|member|owner$"; "i"))
     )) |
-    map(.author.login) |
+    map(.user.login) |
     map(select(. != "'"${ACTION_INITIATOR}"'")) |
     length'
 )
