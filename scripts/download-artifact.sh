@@ -114,13 +114,15 @@ mkdir -p "$ARTIFACTS_DIR_PATH" && cd "$ARTIFACTS_DIR_PATH"
 gh run download "$WORKFLOW_ID" -n "$ARTIFACT_NAME"
 echo "Artifact successfully downloaded!"
 
-# gh api /repos/ORG_NAME/REPO_NAME/actions/runs
-# 
+# API endpoint documentation
 # https://docs.github.com/en/rest/reference/actions#list-workflow-runs-for-a-repository
-# https://docs.github.com/en/graphql/reference/objects#workflowrun
+
+# Relevant objects and enums
 # https://docs.github.com/en/graphql/reference/objects#checkrun
 # https://docs.github.com/en/graphql/reference/enums#checkconclusionstate
-#
+
+# gh api /repos/{org}/{repo}/actions/runs
+# 
 # [
 #  {
 #    "id": 1118040733,
