@@ -14,13 +14,16 @@ inputs:
     description: 'The path to the directory where this action will look for its required artifacts.'
     default: 'gh-action__release-authors'
     required: true
+  github-status-name:
+    description: 'The string that will show up as the name of the GitHub status on PRs.'
+    default: 'Additional Reviews for Releases'
+    required: true
   release-branch-prefix:
     description: 'The prefix of release PR branch names for this repository.'
     default: 'release/'
     required: true
-  github-status-name:
-    description: 'The string that will show up as the name of the GitHub status on PRs.'
-    default: 'Additional Reviews for Releases'
+  read-org-token:
+    description: 'A GitHub access token with the "read:org" scope.'
     required: true
 
 runs:
@@ -52,8 +55,10 @@ runs:
       run: |
         if [[ "${{ steps.check-branch-prefix.outputs.is-release }}" == "true" ]]; then
           ${{ github.action_path }}/scripts/check-for-additional-reviewers.sh \
+            "${{ github.repository }}" \
             "${{ github.event.pull_request.number }}" \
-            "${{ inputs.artifacts-path }}"
+            "${{ inputs.artifacts-path }}" \
+            "${{ inputs.read-org-token }}"
         fi
 
     - name: Set Commit Status
