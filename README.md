@@ -9,19 +9,32 @@ It is designed to be used with [`MetaMask/action-create-release-pr`](https://git
 
 ## Usage
 
-This action is designed to be used in conjunction with [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr).
+This action is designed to be used in conjunction with [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr), and will not work unless your repository also uses that action as recommended by its documentation.
 
-To use this action, you need to make a small addition to the `action-create-release-pr` workflow of your repository, and add a new workflow that uses this action:
+To use this action, you need to make a small addition to the `MetaMask/action-create-release-pr` workflow of your repository, and add a new workflow that uses this action:
 
 - [`.github/workflows/create-release-pr.yml`](https://github.com/MetaMask/action-require-additional-reviewer/blob/main/.github/workflows/create-release-pr.yml)
 - [`.github/workflows/require-additional-reviewer.yml`](https://github.com/MetaMask/action-require-additional-reviewer/blob/main/.github/workflows/require-additional-reviewer.yml)
   - **This workflow file self-references this action with the string "`/.`". Replace that string with "`MetaMask/action-require-additional-reviewer@v1`" in your workflow.**
 
-Once the Require Additional Reviewer workflow has run once, you can add it as a mandatory check in your repository branch protection settings.
+Once the Require Additional Reviewer workflow has run once, you it will create a GitHub commit status that you can use as a mandatory check in your repository branch protection settings.
 
-Note that, if you use this action, you **must not** rebase your release PRs before merging them back into the base branch.
-This action uses the commit hash of the base branch head to identify the workflow that created the release PR, in order to download the artifacts of that workflow.
-Merging the base branch into the release branch is fine.
+This action should never fail, and the status check it creates should only be either pending or successful. If the action fails to execute, first try recreating the release PR. If that doesn't work, identify the error produced by the workflow run and file a bug report.
+
+### Access Token
+
+Under recommended usage, the only input you have to provide to this action is an access token with the `read:org` scope. This token is necessary in order to determine the organization assocation of reviewers.
+See the GitHub documentation for how to [create access tokens](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) and how to [use them in workflows](https://docs.github.com/en/actions/reference/encrypted-secrets).
+
+### Constraints on Relase Pull Requests
+
+Due to constraints imposed by the GitHub Actions platform and the GitHub API, this action imposes some constraints on release pull requests. Therefore, if you use this action, your release pull requests:
+
+- **must not** be rebased before being merged into the base branch.
+  - This action uses the commit hash of the original base branch head to identify the workflow that created the release PR, in order to download the artifacts of that workflow.
+  - Merging the base branch into the PR branch is fine.
+- **should not** be left open for extended periods of time.
+  - If your repository has a lot of `workflow_dispatch` events and a release PR is left open for a long time, there's a chance that this action will fail to extract the ID of the workflow that created the release branch. This action only searches the first 100 successful `workflow_dispatch` events targeting the PR base branch for the workflow run that created the release PR.
 
 ## Contributing
 

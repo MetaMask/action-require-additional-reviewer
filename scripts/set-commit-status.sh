@@ -4,7 +4,7 @@ set -x
 set -e
 set -o pipefail
 
-# This PR checks whether the current PR meets the additional reviewer
+# This script checks whether the current PR meets the additional reviewer
 # requirement for release PRs. Non-release PRs succeed by default.
 # It uses the GitHub Status API to accomplish this. See the actual API call
 # at the end of the file for more details.
@@ -71,4 +71,3 @@ gh api "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${HEAD_COMMIT
 
 # The action should never fail, only set a status for the release branch HEAD
 # commit.
-exit 0

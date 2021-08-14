@@ -4,6 +4,9 @@ set -x
 set -e
 set -o pipefail
 
+# This script checks the prefix of the PR branch name to determine whether it is
+# a release PR.
+
 HEAD_BRANCH_NAME=${1}
 
 if [[ -z $HEAD_BRANCH_NAME ]]; then

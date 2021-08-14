@@ -69,6 +69,8 @@ echo \
 
 # Get the JSON data from GitHub. For the expected format of this data, see the
 # end of this file.
+# We pass the READ_ORG_TOKEN in the authorization header, or else we cannot see
+# hidden organization memberships.
 PR_INFO=$(
   gh api "/repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/reviews" \
     -X "GET" \
@@ -100,30 +102,26 @@ echo ::set-output name=num-other-approving-reviewers::"$NUM_OTHER_APPROVING_REVI
 # https://docs.github.com/en/graphql/reference/enums#pullrequestreviewstate
 # https://docs.github.com/en/graphql/reference/enums#commentauthorassociation
 
-# Related, but not exactly the same as "gh pr view":
-# https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request
+# https://docs.github.com/en/rest/reference/pulls#reviews
 #
-# https://cli.github.com/manual/gh_pr_view
-#
-# gh pr view --json number,reviews
+# gh api /repos/{owner}/{repo}/pulls/{pull_number}/reviews \
 #
 # {
-#   "number": 99,
-#   "reviews": [
+#   [
 #     {
-#       "author": {
+#       "user": {
 #         "login": "username1"
 #       },
 #       "state": "COMMENTED",
-#       "authorAssociation": "OWNER",
+#       "author_association": "OWNER",
 #       ...
 #     },
 #     {
-#       "author": {
+#       "user": {
 #         "login": "username2"
 #       },
 #       "state": "APPROVED",
-#       "authorAssociation": "MEMBER",
+#       "author_association": "MEMBER",
 #       ...
 #     },
 #     ...
