@@ -34,7 +34,7 @@ Due to constraints imposed by the GitHub Actions platform and the GitHub API, th
   - This action uses the commit hash of the original base branch head to identify the workflow that created the release PR, in order to download the artifacts of that workflow.
   - Merging the base branch into the PR branch is fine.
 - **should not** be left open for extended periods of time.
-  - If your repository has a lot of `workflow_dispatch` events and a release PR is left open for a long time, there's a chance that this action will fail to extract the ID of the workflow that created the release branch. This action only searches the first 100 successful `workflow_dispatch` events targeting the PR base branch for the workflow run that created the release PR.
+  - If your repository has a lot of `workflow_dispatch` events and a release PR is left open for a long time, eventually this action will fail to extract the ID of the workflow that created the release branch. This action only searches the first 100 successful `workflow_dispatch` events targeting the PR base branch for the workflow run that created the release PR.
 
 ## Contributing
 
