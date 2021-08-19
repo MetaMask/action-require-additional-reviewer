@@ -7,11 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [1.0.1]
-### Uncategorized
-- Echo an empty string if grep fails in subshell ([#33](https://github.com/MetaMask/action-require-additional-reviewer/pull/33))
-- Rename read:org token secret to match GitHub settings ([#32](https://github.com/MetaMask/action-require-additional-reviewer/pull/32))
-- Update README.md ([#31](https://github.com/MetaMask/action-require-additional-reviewer/pull/31))
-- Fix documentation, remove redundant 'exit 0' ([#30](https://github.com/MetaMask/action-require-additional-reviewer/pull/30))
+### Fixed
+- Ensure action does not fail if release branch has no merge commits ([#33](https://github.com/MetaMask/action-require-additional-reviewer/pull/33))
 
 ## [1.0.0]
 ### Added
