@@ -59,7 +59,7 @@ fi
 
 OLDEST_PR_BRANCH_MERGE_COMMIT=$(
   git rev-list "$PREFIXED_PULL_REQUEST_BASE_BRANCH"..HEAD --merges --reverse |
-  grep -o -m 1 '\w\+'
+  grep -o -m 1 '\w\+' || echo ''
 )
 
 if [[ -n $OLDEST_PR_BRANCH_MERGE_COMMIT ]]; then
