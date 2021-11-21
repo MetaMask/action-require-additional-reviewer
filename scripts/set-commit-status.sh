@@ -50,7 +50,11 @@ COMMIT_STATUS_DESCRIPTION="Whether this PR meets the additional reviewer require
 
 if [[ "$IS_RELEASE" == "false" ]]; then
   echo "The PR is not a release PR. Setting status to success by default."
-  COMMIT_STATUS="success"
+  # Non-Release PRs might be opened by a community contributor using a fork,
+  # which cannot set a commit status due to lack of write permissions
+  # (see https://github.community/t/github-actions-are-severely-limited-on-prs/18179)
+  # Exiting will set the status to "success" anyway.
+  exit 0
 elif (( NUM_OTHER_APPROVING_REVIEWERS > 0 )); then
   echo "Success! Found approving reviews from organization members."
   COMMIT_STATUS="success"
@@ -61,6 +65,8 @@ fi
 
 # https://cli.github.com/manual/gh_api
 # https://docs.github.com/en/rest/reference/repos#create-a-commit-status
+# Warning! Setting commit status fails if the pull request was opened from a fork
+# See https://github.community/t/github-actions-are-severely-limited-on-prs/18179
 
 gh api "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${HEAD_COMMIT_SHA}" \
   -X "POST" \
