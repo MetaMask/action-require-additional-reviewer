@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3]
+### Uncategorized
+- Revert #37 ([#42](https://github.com/MetaMask/action-require-additional-reviewer/pull/42))
+- Update README.md ([#40](https://github.com/MetaMask/action-require-additional-reviewer/pull/40))
+
 ## [1.0.2]
 ### Fixed
 - Fix action always failing for PRs from forks ([#37](https://github.com/MetaMask/action-require-additional-reviewer/pull/37))
@@ -18,7 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/MetaMask/action-require-additional-reviewer/releases/tag/v1.0.0
