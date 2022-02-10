@@ -9,7 +9,7 @@ It is designed to be used with [`MetaMask/action-create-release-pr`](https://git
 
 ## Usage
 
-This action is designed to be used in conjunction with [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr), and will not work unless your repository also uses that action as recommended by its documentation.
+This action is designed to be used in public repositories alongside [`MetaMask/action-create-release-pr`](https://github.com/MetaMask/action-create-release-pr), and will not work unless your repository also uses that action as recommended by its documentation.
 
 To use this action, you need to make a small addition to the `MetaMask/action-create-release-pr` workflow of your repository, and add a new workflow that uses this action:
 
@@ -26,7 +26,7 @@ This action should never fail, and the status check it creates should only be ei
 Under recommended usage, the only input you have to provide to this action is an access token with the `read:org` scope. This token is necessary in order to determine the organization assocation of reviewers.
 See the GitHub documentation for how to [create access tokens](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) and how to [use them in workflows](https://docs.github.com/en/actions/reference/encrypted-secrets).
 
-### Constraints on Relase Pull Requests
+### Constraints on Release Pull Requests
 
 Due to constraints imposed by the GitHub Actions platform and the GitHub API, this action imposes some constraints on release pull requests. Therefore, if you use this action, your release pull requests:
 
