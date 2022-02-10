@@ -19,9 +19,9 @@ jobs:
           # need to find the earliest common ancestor commit of the base and
           # release branches.
           fetch-depth: 0
-          # We want the head commit of the feature branch to be checked out,
-          # and we will compare it to the base branch in the action.
-          ref: ${{ github.event.pull_request.head.sha }}
+          # We want the head / feature branch to be checked out, and we will
+          # compare it to the base branch in the action.
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: ./
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
