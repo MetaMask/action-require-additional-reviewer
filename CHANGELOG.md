@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [1.0.3]
-### Uncategorized
-- Revert #37 ([#42](https://github.com/MetaMask/action-require-additional-reviewer/pull/42))
-- Update README.md ([#40](https://github.com/MetaMask/action-require-additional-reviewer/pull/40))
+### Fixed
+- Status checks for non-release PRs ([#42](https://github.com/MetaMask/action-require-additional-reviewer/pull/42))
+  - [#37](https://github.com/MetaMask/action-require-additional-reviewer/pull/37) did not work as expected, and instead prevent the status check used by this action from succeeding for non-release PRs. We will fix PRs from forks separately.
 
 ## [1.0.2]
 ### Fixed
