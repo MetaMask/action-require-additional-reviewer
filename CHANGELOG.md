@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.4]
 ### Changed
-- Bump actions ([#47](https://github.com/MetaMask/action-require-additional-reviewer/pull/47))
+- Bump actions, removing deprecation warning ([#47](https://github.com/MetaMask/action-require-additional-reviewer/pull/47))
 
 ## [1.0.3]
 ### Fixed
