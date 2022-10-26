@@ -1,6 +1,6 @@
 {
   "name": "action-require-additional-reviewer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "A GitHub Action that can be used to require additional reviewers of automatically created Pull Requests.",
   "repository": {
