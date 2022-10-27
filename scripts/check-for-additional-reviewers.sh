@@ -96,7 +96,7 @@ NUM_OTHER_APPROVING_REVIEWERS=$(
     length'
 )
 
-echo "num-other-approving-reviewers=$NUM_OTHER_APPROVING_REVIEWERS" >> $GITHUB_OUTPUT
+echo "num-other-approving-reviewers=$NUM_OTHER_APPROVING_REVIEWERS" >> "$GITHUB_OUTPUT"
 
 # API endpoint documentation
 # https://docs.github.com/en/rest/reference/pulls#reviews
