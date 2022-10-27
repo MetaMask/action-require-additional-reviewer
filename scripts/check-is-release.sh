@@ -31,4 +31,4 @@ else
   IS_RELEASE="false"
 fi
 
-echo "::set-output name=is-release::$IS_RELEASE"
+echo "is-release=$IS_RELEASE" >> "$GITHUB_OUTPUT"
