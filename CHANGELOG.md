@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5]
+### Uncategorized
+- Remove `set-output` ([#49](https://github.com/MetaMask/action-require-additional-reviewer/pull/49))
+
 ## [1.0.4]
 ### Changed
 - Bump actions, removing deprecation warning ([#47](https://github.com/MetaMask/action-require-additional-reviewer/pull/47))
@@ -27,7 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.5...HEAD
+[1.0.5]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/MetaMask/action-require-additional-reviewer/compare/v1.0.1...v1.0.2
