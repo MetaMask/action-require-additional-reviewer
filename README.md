@@ -1,5 +1,10 @@
 # MetaMask/action-require-additional-reviewer
 
+## Deprecated
+
+This action is deprecated since it's no longer in use within the MetaMask
+repositories. It's still available for use, but no longer maintained.
+
 ## Description
 
 This action can be used to create workflows that require additional reviewers for programmatically created pull requests.
